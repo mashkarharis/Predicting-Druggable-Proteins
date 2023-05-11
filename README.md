@@ -13,3 +13,26 @@ First, we use following properties to extract features.
 After feature extraction we develop machine leraning models to predict the drugrability of the sequence.
 
 # How to Use
+
+- First Create Virtual Environment by running "python -m venv venv"
+- Then install all the requirements by running "pip install -r requirements.txt"
+- Put required 4 files in the directory
+    - TR_POS
+    - TR_NEG
+    - TS_POS
+    - TS_NEG
+- Give executable permission by running "chmod +x run.sh"
+- Finally run using "./run.sh positive_training_data negative_training_data positive_testing_data negative_testing_data"
+    - Use FASA format
+    - Default is "./run.sh TR_pos_SPIDER.fasta TR_neg_SPIDER.fasta TS_pos_SPIDER.fasta TS_neg_SPIDER.fasta"
+
+# Group Details
+
+This is a project done for CS4742 - Bioinformatics by
+
+- By Group : Deoxyribos
+- Members : GUNATHILAKA C.G. 180211X, WIMALARATNE G.D.S.U. 180718H, KARUNASENA S.T. 180313L, ASHKAR M.H.M. 180048D
+
+#
+
+
