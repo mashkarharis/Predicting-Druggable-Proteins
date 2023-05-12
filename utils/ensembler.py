@@ -10,7 +10,7 @@ class Ensembler:
     def __init__(self,logger) -> None:
         self.logger=logger
 
-    def Majority_Vote_Ensembler(self,models,train_data,test_data):
+    def Majority_Vote_Ensembler(self,models,val_data,test_data):
         
         self.logger.info(" Calculating Predictions")
         y_pred_model1 = models["RSSECOND"].predict(test_data["RSSECOND"][0])
@@ -25,23 +25,22 @@ class Ensembler:
         self.logger.info("")
         self.printResult(test_data["RSSECOND"][1],y_pred_ensemble)
     
-    def Weighted_Vote_Ensembler(self,models,train_data,test_data):
+    def Weighted_Vote_Ensembler(self,models,val_data,test_data):
         
         # Predict For Train Data
         self.logger.info(" Get Train Data Prediction For Each Model")
-        y_pred_model1_train = models["RSSECOND"].predict(train_data["RSSECOND"][0])
-        y_pred_model2_train = models["RSDHP"].predict(train_data["RSDHP"][0])
-        y_pred_model3_train = models["RSACID"].predict(train_data["RSACID"][0])
-        y_pred_model4_train = models["RSPOLAR"].predict(train_data["RSPOLAR"][0])
-        y_pred_model5_train = models["RSCHARGE"].predict(train_data["RSCHARGE"][0])
+        y_pred_model1_train = models["RSSECOND"].predict(val_data["RSSECOND"][0])
+        y_pred_model2_train = models["RSDHP"].predict(val_data["RSDHP"][0])
+        y_pred_model3_train = models["RSACID"].predict(val_data["RSACID"][0])
+        y_pred_model4_train = models["RSPOLAR"].predict(val_data["RSPOLAR"][0])
+        y_pred_model5_train = models["RSCHARGE"].predict(val_data["RSCHARGE"][0])
 
         # Stack Train Predictons
         meta_features_train = np.column_stack((y_pred_model1_train, y_pred_model2_train, y_pred_model3_train,y_pred_model4_train,y_pred_model5_train))
 
-        print(train_data["RSSECOND"][1]==train_data["RSDHP"][1]==train_data["RSACID"][1]==train_data["RSPOLAR"][1]==train_data["RSCHARGE"][1])
         # Train A Ensembler
         meta_classifier = LogisticRegression(random_state=42)
-        meta_classifier.fit(meta_features_train, train_data["RSDHP"][1])
+        meta_classifier.fit(meta_features_train, val_data["RSCHARGE"][1])
 
         # Contributions
         self.logger.info("")

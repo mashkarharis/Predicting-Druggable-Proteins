@@ -6,6 +6,7 @@ from utils.file_manager import FileManager
 from utils.feature_extractor import FeatureExtractor
 from utils.model_train import ModelTrainer
 from utils.ensembler import Ensembler
+from sklearn.model_selection import train_test_split
 
 # Create Logger
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -122,14 +123,6 @@ models = {
     "RSCHARGE":rscharge_model
 }
 
-train_data = {
-    "RSSECOND":[rssecond_train_X,rssecond_train_y],
-    "RSDHP":[rdhp_train_X,rdhp_train_y],
-    "RSACID":[rsacid_train_X,rsacid_train_y],
-    "RSPOLAR":[rspolar_train_X,rspolar_train_y],
-    "RSCHARGE":[rscharge_train_X,rscharge_train_y]
-}
-
 test_data = {
     "RSSECOND":[rssecond_test_X,rssecond_test_y],
     "RSDHP":[rdhp_test_X,rdhp_test_y],
@@ -138,14 +131,26 @@ test_data = {
     "RSCHARGE":[rscharge_test_X,rscharge_test_y]
 }
 
+# Divide To Test And Validation
+logger.info("Val / Test Splitting . . . ")
+test_size = 0.2  
+val_data, new_test_data = {}, {}
+for key, value in test_data.items():
+    X, y = value
+    X_val, X_test, y_val, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+    val_data[key] = [X_val, y_val]
+    new_test_data[key] = [X_test, y_test]
+logger.info(" Val Size :"+str(len(val_data["RSCHARGE"][0])))
+logger.info(" Test Size :"+str(len(new_test_data["RSCHARGE"][0])))
+logger.info("")
 
 # Ensembling
 logger.info('Ensembling [1] : Majority Hard Voted Cassifier')
 ensembler = Ensembler(logger)
-ensembler.Majority_Vote_Ensembler(models,train_data,test_data)
+ensembler.Majority_Vote_Ensembler(models,val_data,new_test_data)
 logger.info('')
 
 logger.info('Ensembling [2] : Weighted Voted Cassifier')
 ensembler = Ensembler(logger)
-ensembler.Weighted_Vote_Ensembler(models,train_data,test_data)
+ensembler.Weighted_Vote_Ensembler(models,val_data,new_test_data)
 logger.info('')
