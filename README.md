@@ -14,8 +14,7 @@ After feature extraction we develop machine leraning models to predict the drugr
 
 # How to Use
 
-- First Create Virtual Environment by running "python -m venv venv"
-- Then install all the requirements by running "pip install -r requirements.txt"
+- First install all the requirements by running "python -m pip install -r requirements.txt"
 - Put required 4 files in the directory
     - TR_POS
     - TR_NEG
