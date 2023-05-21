@@ -61,6 +61,7 @@ class Ensembler:
         self.logger.info("")
         self.printResult(test_data["RSSECOND"][1],y_pred_ensemble)
 
+        return test_data["RSACID"][1],y_pred_ensemble,y_pred_model3
 
 
     def printResult(self,y_test,y_pred):
@@ -78,3 +79,5 @@ class Ensembler:
         self.logger.info('  Precision:'+str(precision))
         self.logger.info('  F1-score:'+str(f1))
         self.logger.info('  MCC:'+str(mcc))
+
+        

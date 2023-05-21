@@ -152,5 +152,12 @@ logger.info('')
 
 logger.info('Ensembling [2] : Weighted Voted Cassifier')
 ensembler = Ensembler(logger)
-ensembler.Weighted_Vote_Ensembler(models,val_data,new_test_data)
+test_targets,ensmeble_preds,RSACID_preds = ensembler.Weighted_Vote_Ensembler(models,val_data,new_test_data)
+logger.info('')
+
+# Stat
+logger.info('Calculating Statistical Significance')
+logger.info('Length of Test Targets : '+str(len(test_targets)))
+logger.info('Length of Ensemble Predictions : '+str(len(ensmeble_preds)))
+logger.info('Length of RSACID Predictions : '+str(len(RSACID_preds)))
 logger.info('')
